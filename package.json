@@ -1,0 +1,23 @@
+{
+  "bin": {
+    "rn": "index.js"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "chalk": "^1.1.1",
+    "chokidar": "^3.2.1",
+    "colors": "^1.4.0",
+    "minimist": "^1.2.0",
+    "prompt": "^0.2.14",
+    "semver": "^5.0.3"
+  },
+  "deprecated": false,
+  "description": "The React Native CLI tools",
+  "engines": {
+    "node": ">=4"
+  },
+  "license": "BSD-3-Clause",
+  "main": "index.js",
+  "name": "rn-fast-cli",
+  "version": "1.0.1"
+}
