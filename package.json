@@ -9,6 +9,7 @@
     "colors": "^1.4.0",
     "minimist": "^1.2.0",
     "prompt": "^0.2.14",
+    "readline-sync": "^1.4.10",
     "semver": "^5.0.3"
   },
   "deprecated": false,
@@ -19,5 +20,5 @@
   "license": "BSD-3-Clause",
   "main": "index.js",
   "name": "rn-fast-cli",
-  "version": "1.0.1"
+  "version": "1.0.2"
 }

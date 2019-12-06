@@ -33,8 +33,6 @@
 // /!\ DO NOT MODIFY THIS FILE /!\
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// var changePackageName = require('./changePackageName').default
-// console.log(changePackageName)
 'use strict';
 
 var fs = require('fs');
@@ -45,7 +43,6 @@ var chalk = require('chalk');
 var prompt = require('prompt');
 var semver = require('semver');
 var chokidar = require('chokidar');
- 
 /**
  * Used arguments:
  *   -v --version - to print current version of rn-cli and react-native dependency
@@ -114,11 +111,14 @@ var cliPath = CLI_MODULE_PATH();
 if (fs.existsSync(cliPath)) {
   cli = require(cliPath);
 }
+  console.log("options",options)
 
 var commands = options._;
 if (cli) {
+  console.log("有")
   cli.run();
 } else {
+  console.log("没有")
   if (options._.length === 0 && (options.h || options.help)) {
     console.log([
       '',
@@ -145,6 +145,7 @@ if (cli) {
     process.exit(1);
   }
 
+  console.log("liucheng,",commands )
   switch (commands[0]) {
   case 'init':
     if (!commands[1]) {
@@ -153,7 +154,10 @@ if (cli) {
       );
       process.exit(1);
     } else {
-      init(commands[1], options);
+      const checkThirdPacakges = require('./checkThirdPacakges').default
+      const newOptions = checkThirdPacakges(options)
+      // console.log(newOptions)
+      init(commands[1], newOptions);
     }
     break;
   default:
