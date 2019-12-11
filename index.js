@@ -9,29 +9,6 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// /!\ DO NOT MODIFY THIS FILE /!\
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//
-// rn-cli is installed globally on people's computers. This means
-// that it is extremely difficult to have them upgrade the version and
-// because there's only one global version installed, it is very prone to
-// breaking changes.
-//
-// The only job of rn-cli is to init the repository and then
-// forward all the commands to the local version of react-native.
-//
-// If you need to add a new command, please add it to local-cli/.
-//
-// The only reason to modify this file is to add more warnings and
-// troubleshooting information for the `react-native init` command.
-//
-// Do not make breaking changes! We absolutely don't want to have to
-// tell people to update their global version of rn-cli.
-//
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// /!\ DO NOT MODIFY THIS FILE /!\
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 'use strict';
 
@@ -43,18 +20,7 @@ var chalk = require('chalk');
 var prompt = require('prompt');
 var semver = require('semver');
 var chokidar = require('chokidar');
-/**
- * Used arguments:
- *   -v --version - to print current version of rn-cli and react-native dependency
- *   if you are in a RN app folder
- * init - to create a new project and npm install it
- *   --verbose - to print logs while init
- *   --version <alternative react-native package> - override default (https://registry.npmjs.org/react-native@latest),
- *      package to install, examples:
- *     - "0.22.0-rc1" - A new app will be created using a specific version of React Native from npm repo
- *     - "https://registry.npmjs.org/react-native/-/react-native-0.20.0.tgz" - a .tgz archive from any npm repo
- *     - "/Users/home/react-native/react-native-0.22.0.tgz" - for package prepared with `npm pack`, useful for e2e tests
- */
+
 
 var options = require('minimist')(process.argv.slice(2));
 var CLI_MODULE_PATH = function() {
@@ -111,14 +77,11 @@ var cliPath = CLI_MODULE_PATH();
 if (fs.existsSync(cliPath)) {
   cli = require(cliPath);
 }
-  console.log("options",options)
 
 var commands = options._;
 if (cli) {
-  console.log("有")
   cli.run();
 } else {
-  console.log("没有")
   if (options._.length === 0 && (options.h || options.help)) {
     console.log([
       '',
@@ -145,7 +108,6 @@ if (cli) {
     process.exit(1);
   }
 
-  console.log("liucheng,",commands )
   switch (commands[0]) {
   case 'init':
     if (!commands[1]) {
@@ -156,7 +118,7 @@ if (cli) {
     } else {
       const checkThirdPacakges = require('./checkThirdPacakges').default
       const newOptions = checkThirdPacakges(options)
-      // console.log(newOptions)
+      console.log(newOptions)
       init(commands[1], newOptions);
     }
     break;
@@ -322,10 +284,20 @@ watcher
         changePackageName(root,projectName,options)
 
         if(options.packages){
-          installPackage(options.packages,false,yarnVersion,root)
+          installPackage(options.packages,false,yarnVersion,root, options.registry)
         }
         if(options.devpackages){
-          installPackage(options.devpackages,true,yarnVersion,root)
+          installPackage(options.devpackages,true,yarnVersion,root, options.registry)
+        }
+
+        if(options.command){
+          try {
+            execSync(options.command, {stdio: 'inherit'});
+          } catch (err) {
+            console.error(err);
+            console.error('Command `' + options.command + '` failed.');
+            process.exit(1);
+          }
         }
       }
     }
@@ -361,7 +333,7 @@ function printVersionsAndExit(reactNativePackageJsonPath) {
 
 
 
-function installPackage(packages,isDev,yarnVersion, currentDir){
+function installPackage(packages,isDev,yarnVersion, currentDir, registry){
     var packages = packages.replace(/\|/g," ")
     var pinstallCommand 
     if(yarnVersion){
@@ -369,6 +341,8 @@ function installPackage(packages,isDev,yarnVersion, currentDir){
     }else{
       pinstallCommand = isDev ? 'npm install --save-dev ' + packages: 'npm install --save ' + packages;
     }
+    pinstallCommand = registry ? pinstallCommand + "--registry=" + registry : pinstallCommand
+
     try {
       execSync(`cd ${currentDir} && ${pinstallCommand}`, {stdio: 'inherit'});
       if(!isDev){

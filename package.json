@@ -6,7 +6,6 @@
   "dependencies": {
     "chalk": "^1.1.1",
     "chokidar": "^3.2.1",
-    "colors": "^1.4.0",
     "minimist": "^1.2.0",
     "prompt": "^0.2.14",
     "readline-sync": "^1.4.10",
@@ -20,5 +19,5 @@
   "license": "BSD-3-Clause",
   "main": "index.js",
   "name": "rn-fast-cli",
-  "version": "1.0.2"
+  "version": "1.0.3"
 }

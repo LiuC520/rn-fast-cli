@@ -6,27 +6,28 @@
  * 
  * @Author: 刘成
  * @Date: 2019-12-05 17:06:15
- * @LastEditTime: 2019-12-06 17:48:20
+ * @LastEditTime: 2019-12-09 20:49:45
  * @LastEditors: 刘成
  */
 
 var readlineSync = require('readline-sync');
-var colors = require('colors');
 var fs = require('fs');
 var path = require('path');
+var chalk = require('chalk');
+
 
 function checkHasThridPackages(options){
   const newOptions = options
   //是否有android包名
   if(!newOptions.android){
-     var androidName = readlineSync.question('请输入android包名，默认：' + colors.red('com.' + newOptions._[1]) + '，默认请按下回车，输入完请按下回车\n');
+     var androidName = readlineSync.question('请输入android包名，默认：' + chalk.red('com.' + newOptions._[1]) + '，默认请按下回车，输入完请按下回车\n');
     if(androidName){
       newOptions.android = androidName
     }
   }
   //ios包名
   if(!newOptions.ios){
-     var iosName = readlineSync.question('请输入ios包名 bundle id，默认：' + colors.red('org.reactjs.native.example.' + newOptions._[1]) + '，默认请按下回车，输入完请按下回车\n');
+     var iosName = readlineSync.question('请输入ios包名 bundle id，默认：' + chalk.red('org.reactjs.native.example.' + newOptions._[1]) + '，默认请按下回车，输入完请按下回车\n');
     if(iosName){
       newOptions.ios = iosName
     }
@@ -34,7 +35,7 @@ function checkHasThridPackages(options){
   //是否有三方库
   var pacakgePath
   if(!newOptions.pacakgesconfig){
-     pacakgePath = readlineSync.question('是否导入三方库的配置文件，文件名为'+colors.red('packages.config.js')+'，配置文件的格式如下：'+colors.green('\nmodule.exports = {\n //安装包\n packages:[\n  { name: "mobx", version:"4.2.1" },\n ],\n //dev安装包\n devpackages:[\n  { name: "tslint" },\n ]\n}') + '\n请输入配置文件的全路径：\n');
+     pacakgePath = readlineSync.question('是否导入三方库的配置文件，文件名为'+chalk.red('packages.config.js')+'，配置文件的格式如下：'+chalk.green('\nmodule.exports = {\n //安装包\n packages:[\n  { name: "mobx", version:"4.2.1" },\n ],\n //dev安装包\n devpackages:[\n  { name: "tslint" },\n ]\n}') + '\n请输入配置文件的全路径：\n');
   }else{
     pacakgePath = newOptions.pacakgesconfig
   }
@@ -78,6 +79,10 @@ function setPackagesToOptions(pacakgePath,newOptions){
       newOptions.devpackages = devps
     }
   }
+  // npm代理
+  if(packagesConfig.registry){
+    newOptions.registry= packagesConfig.registry
+  }
 }
 //判断npm安装包的路径是否存在
 function packagePathRight(pacakgePath,newOptions) {
@@ -90,11 +95,11 @@ function packagePathRight(pacakgePath,newOptions) {
         if(fs.existsSync(configPath)) {
           setPackagesToOptions(configPath,newOptions)
         }else{
-          var newPacakgePath = readlineSync.question(colors.red(pacakgePath)+' 文件不存在，请重新输入:\n');
+          var newPacakgePath = readlineSync.question(chalk.red(pacakgePath)+' 文件不存在，请重新输入:\n');
           packagePathRight(newPacakgePath)
         }
       }else{
-        var newPacakgePath = readlineSync.question(colors.red(pacakgePath)+' 路径不正确，请重新输入:\n');
+        var newPacakgePath = readlineSync.question(chalk.red(pacakgePath)+' 路径不正确，请重新输入:\n');
         packagePathRight(newPacakgePath)
       }
     }

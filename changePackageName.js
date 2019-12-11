@@ -4,12 +4,10 @@
  * @Author: 刘成
  * @mail: 674668211@qq.com
  * @Date: 2019-10-14 10:44:36
- * @LastEditTime: 2019-10-15 18:11:09
+ * @LastEditTime: 2019-12-09 20:49:04
  * @LastEditors: 刘成
  */
 var fs = require('fs');
-var path = require('path');
-var colors = require('colors');
 
  const util = require('./util').default
  function changePackageName(projectDir,projectName, options){
