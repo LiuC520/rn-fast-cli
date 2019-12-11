@@ -6,7 +6,7 @@
  * 
  * @Author: 刘成
  * @Date: 2019-12-05 17:06:15
- * @LastEditTime: 2019-12-09 20:49:45
+ * @LastEditTime: 2019-12-11 15:09:04
  * @LastEditors: 刘成
  */
 
@@ -50,7 +50,7 @@ function joinPackages(packages){
     if(packages[i].name){
       s+=packages[i].name
       if(packages[i].version){
-        s+=packages[i].version
+        s+=("@"+packages[i].version)
       }
       //添加分隔符
       if(i!==packages.length-1){
