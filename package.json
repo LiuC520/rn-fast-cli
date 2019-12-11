@@ -19,5 +19,5 @@
   "license": "BSD-3-Clause",
   "main": "index.js",
   "name": "rn-fast-cli",
-  "version": "1.0.3"
+  "version": "1.0.4"
 }
