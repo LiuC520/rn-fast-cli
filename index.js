@@ -341,7 +341,7 @@ function installPackage(packages,isDev,yarnVersion, currentDir, registry){
     }else{
       pinstallCommand = isDev ? 'npm install --save-dev ' + packages: 'npm install --save ' + packages;
     }
-    pinstallCommand = registry ? pinstallCommand + "--registry=" + registry : pinstallCommand
+    pinstallCommand = registry ? pinstallCommand + " --registry=" + registry : pinstallCommand
 
     try {
       execSync(`cd ${currentDir} && ${pinstallCommand}`, {stdio: 'inherit'});
